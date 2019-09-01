@@ -1,4 +1,4 @@
-package le.arn.org.virtuoso.slam;
+package org.virtuoso.slam;
 
 public class Main
 {

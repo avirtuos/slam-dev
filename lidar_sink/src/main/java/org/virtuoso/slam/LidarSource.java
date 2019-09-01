@@ -1,11 +1,7 @@
-package le.arn.org.virtuoso.slam;
-
-import com.google.protobuf.InvalidProtocolBufferException;
-import le.arn.GreetingProtos;
-import org.virtuoso.slam.Slam;
+package org.virtuoso.slam;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.Socket;
 
 public class LidarSource
 {
