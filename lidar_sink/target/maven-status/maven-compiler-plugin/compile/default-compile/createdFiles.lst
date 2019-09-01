@@ -1,0 +1,16 @@
+org/virtuoso/slam/Slam$GreetingOrBuilder.class
+org/virtuoso/slam/Slam$TelemetryPoint.class
+org/virtuoso/slam/Slam$TelemetryPointOrBuilder.class
+org/virtuoso/slam/Slam$1.class
+org/virtuoso/slam/Slam$Greeting$Builder.class
+org/virtuoso/slam/Slam$Greeting$1.class
+le/arn/GreetingProtos$Greeting$Builder.class
+le/arn/GreetingProtos$1.class
+org/virtuoso/slam/Slam$TelemetryPoint$1.class
+org/virtuoso/slam/Slam$TelemetryPoint$Builder.class
+le/arn/GreetingProtos.class
+le/arn/GreetingProtos$Greeting.class
+org/virtuoso/slam/Slam.class
+le/arn/GreetingProtos$Greeting$1.class
+org/virtuoso/slam/Slam$Greeting.class
+le/arn/GreetingProtos$GreetingOrBuilder.class

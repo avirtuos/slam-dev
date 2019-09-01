@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+// This is the package where the java source code will be placed.
+option java_package = "org.virtuoso.slam";
+
+// This is the name of the class.
+// If not provided, it will be created as <message name>OuterClass.
+option java_outer_classname = "Slam";
+message Greeting {
+  required string greeting = 1;
+
+}
+
+message Point {
+  required int32 x = 1;
+  required int32 y= 2;
+  required float distance = 3;
+  required float angle = 4;
+
+}
