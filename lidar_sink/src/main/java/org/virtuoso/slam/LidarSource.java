@@ -5,18 +5,32 @@ import java.net.Socket;
 
 public class LidarSource
 {
-
-    public void attach()
+    public interface PointListener
     {
-        try (Socket socket = new Socket("jetson.localdomain", 8080)) {
-            while (socket.isConnected() && !socket.isClosed()) {
-                Slam.TelemetryPoint point = Slam.TelemetryPoint.parseDelimitedFrom(socket.getInputStream());
-                socket.getInputStream().read();
-                System.out.println("point= " + point.getX() + " " + point.getY() + " " + point.getAngle() + " " + point.getDistance());
+        void onPoint(Slam.Point point);
+    }
+
+    public void attach(PointListener listener)
+    {
+        while (true) {
+            try (Socket socket = new Socket("jetson.localdomain", 8080)) {
+                while (socket.isConnected() && !socket.isClosed()) {
+                    Slam.Point point = Slam.Point.parseDelimitedFrom(socket.getInputStream());
+                    socket.getInputStream().read();
+                    if (point != null) {
+                        listener.onPoint(point);
+                    }
+                }
             }
-        }
-        catch (IOException ex) {
-            throw new RuntimeException(ex);
+            catch (IOException ex) {
+                ex.printStackTrace();
+                try {
+                    Thread.sleep(5_000);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

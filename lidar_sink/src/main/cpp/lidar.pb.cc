@@ -18,8 +18,8 @@
 // @@protoc_insertion_point(includes)
 class GreetingDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Greeting> {
 } _Greeting_default_instance_;
-class TelemetryPointDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<TelemetryPoint> {
-} _TelemetryPoint_default_instance_;
+class PointDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Point> {
+} _Point_default_instance_;
 
 namespace protobuf_lidar_2eproto {
 
@@ -37,28 +37,30 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Greeting, greeting_),
   0,
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TelemetryPoint, _has_bits_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TelemetryPoint, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TelemetryPoint, x_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TelemetryPoint, y_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TelemetryPoint, distance_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TelemetryPoint, angle_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, x_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, y_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, distance_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, angle_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, end_),
   0,
   1,
   2,
   3,
+  4,
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, 5, sizeof(Greeting)},
-  { 6, 14, sizeof(TelemetryPoint)},
+  { 6, 15, sizeof(Point)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_Greeting_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&_TelemetryPoint_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_Point_default_instance_),
 };
 
 namespace {
@@ -87,7 +89,7 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void TableStruct::Shutdown() {
   _Greeting_default_instance_.Shutdown();
   delete file_level_metadata[0].reflection;
-  _TelemetryPoint_default_instance_.Shutdown();
+  _Point_default_instance_.Shutdown();
   delete file_level_metadata[1].reflection;
 }
 
@@ -96,7 +98,7 @@ void TableStruct::InitDefaultsImpl() {
 
   ::google::protobuf::internal::InitProtobufDefaults();
   _Greeting_default_instance_.DefaultConstruct();
-  _TelemetryPoint_default_instance_.DefaultConstruct();
+  _Point_default_instance_.DefaultConstruct();
 }
 
 void InitDefaults() {
@@ -107,12 +109,12 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] = {
       "\n\013lidar.proto\"\034\n\010Greeting\022\020\n\010greeting\030\001 "
-      "\002(\t\"G\n\016TelemetryPoint\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 "
-      "\002(\005\022\020\n\010distance\030\003 \002(\002\022\r\n\005angle\030\004 \002(\002B\031\n\021"
-      "org.virtuoso.slamB\004Slam"
+      "\002(\t\"K\n\005Point\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\020\n\010di"
+      "stance\030\003 \002(\002\022\r\n\005angle\030\004 \002(\002\022\013\n\003end\030\005 \002(\010"
+      "B\031\n\021org.virtuoso.slamB\004Slam"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 143);
+      descriptor, 147);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "lidar.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -448,84 +450,85 @@ void Greeting::set_allocated_greeting(::std::string* greeting) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int TelemetryPoint::kXFieldNumber;
-const int TelemetryPoint::kYFieldNumber;
-const int TelemetryPoint::kDistanceFieldNumber;
-const int TelemetryPoint::kAngleFieldNumber;
+const int Point::kXFieldNumber;
+const int Point::kYFieldNumber;
+const int Point::kDistanceFieldNumber;
+const int Point::kAngleFieldNumber;
+const int Point::kEndFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-TelemetryPoint::TelemetryPoint()
+Point::Point()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     protobuf_lidar_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:TelemetryPoint)
+  // @@protoc_insertion_point(constructor:Point)
 }
-TelemetryPoint::TelemetryPoint(const TelemetryPoint& from)
+Point::Point(const Point& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _has_bits_(from._has_bits_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&x_, &from.x_,
-    reinterpret_cast<char*>(&angle_) -
-    reinterpret_cast<char*>(&x_) + sizeof(angle_));
-  // @@protoc_insertion_point(copy_constructor:TelemetryPoint)
+    reinterpret_cast<char*>(&end_) -
+    reinterpret_cast<char*>(&x_) + sizeof(end_));
+  // @@protoc_insertion_point(copy_constructor:Point)
 }
 
-void TelemetryPoint::SharedCtor() {
+void Point::SharedCtor() {
   _cached_size_ = 0;
-  ::memset(&x_, 0, reinterpret_cast<char*>(&angle_) -
-    reinterpret_cast<char*>(&x_) + sizeof(angle_));
+  ::memset(&x_, 0, reinterpret_cast<char*>(&end_) -
+    reinterpret_cast<char*>(&x_) + sizeof(end_));
 }
 
-TelemetryPoint::~TelemetryPoint() {
-  // @@protoc_insertion_point(destructor:TelemetryPoint)
+Point::~Point() {
+  // @@protoc_insertion_point(destructor:Point)
   SharedDtor();
 }
 
-void TelemetryPoint::SharedDtor() {
+void Point::SharedDtor() {
 }
 
-void TelemetryPoint::SetCachedSize(int size) const {
+void Point::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* TelemetryPoint::descriptor() {
+const ::google::protobuf::Descriptor* Point::descriptor() {
   protobuf_lidar_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_lidar_2eproto::file_level_metadata[1].descriptor;
 }
 
-const TelemetryPoint& TelemetryPoint::default_instance() {
+const Point& Point::default_instance() {
   protobuf_lidar_2eproto::InitDefaults();
   return *internal_default_instance();
 }
 
-TelemetryPoint* TelemetryPoint::New(::google::protobuf::Arena* arena) const {
-  TelemetryPoint* n = new TelemetryPoint;
+Point* Point::New(::google::protobuf::Arena* arena) const {
+  Point* n = new Point;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void TelemetryPoint::Clear() {
-// @@protoc_insertion_point(message_clear_start:TelemetryPoint)
-  if (_has_bits_[0 / 32] & 15u) {
-    ::memset(&x_, 0, reinterpret_cast<char*>(&angle_) -
-      reinterpret_cast<char*>(&x_) + sizeof(angle_));
+void Point::Clear() {
+// @@protoc_insertion_point(message_clear_start:Point)
+  if (_has_bits_[0 / 32] & 31u) {
+    ::memset(&x_, 0, reinterpret_cast<char*>(&end_) -
+      reinterpret_cast<char*>(&x_) + sizeof(end_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
 }
 
-bool TelemetryPoint::MergePartialFromCodedStream(
+bool Point::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:TelemetryPoint)
+  // @@protoc_insertion_point(parse_start:Point)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -583,6 +586,19 @@ bool TelemetryPoint::MergePartialFromCodedStream(
         break;
       }
 
+      // required bool end = 5;
+      case 5: {
+        if (tag == 40u) {
+          set_has_end();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &end_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -597,17 +613,17 @@ bool TelemetryPoint::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:TelemetryPoint)
+  // @@protoc_insertion_point(parse_success:Point)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:TelemetryPoint)
+  // @@protoc_insertion_point(parse_failure:Point)
   return false;
 #undef DO_
 }
 
-void TelemetryPoint::SerializeWithCachedSizes(
+void Point::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:TelemetryPoint)
+  // @@protoc_insertion_point(serialize_start:Point)
   // required int32 x = 1;
   if (has_x()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->x(), output);
@@ -628,17 +644,22 @@ void TelemetryPoint::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->angle(), output);
   }
 
+  // required bool end = 5;
+  if (has_end()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->end(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:TelemetryPoint)
+  // @@protoc_insertion_point(serialize_end:Point)
 }
 
-::google::protobuf::uint8* TelemetryPoint::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* Point::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:TelemetryPoint)
+  // @@protoc_insertion_point(serialize_to_array_start:Point)
   // required int32 x = 1;
   if (has_x()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->x(), target);
@@ -659,16 +680,21 @@ void TelemetryPoint::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->angle(), target);
   }
 
+  // required bool end = 5;
+  if (has_end()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->end(), target);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:TelemetryPoint)
+  // @@protoc_insertion_point(serialize_to_array_end:Point)
   return target;
 }
 
-size_t TelemetryPoint::RequiredFieldsByteSizeFallback() const {
-// @@protoc_insertion_point(required_fields_byte_size_fallback_start:TelemetryPoint)
+size_t Point::RequiredFieldsByteSizeFallback() const {
+// @@protoc_insertion_point(required_fields_byte_size_fallback_start:Point)
   size_t total_size = 0;
 
   if (has_x()) {
@@ -695,10 +721,15 @@ size_t TelemetryPoint::RequiredFieldsByteSizeFallback() const {
     total_size += 1 + 4;
   }
 
+  if (has_end()) {
+    // required bool end = 5;
+    total_size += 1 + 1;
+  }
+
   return total_size;
 }
-size_t TelemetryPoint::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:TelemetryPoint)
+size_t Point::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Point)
   size_t total_size = 0;
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -706,7 +737,7 @@ size_t TelemetryPoint::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         unknown_fields());
   }
-  if (((_has_bits_[0] & 0x0000000f) ^ 0x0000000f) == 0) {  // All required fields are present.
+  if (((_has_bits_[0] & 0x0000001f) ^ 0x0000001f) == 0) {  // All required fields are present.
     // required int32 x = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -723,6 +754,9 @@ size_t TelemetryPoint::ByteSizeLong() const {
     // required float angle = 4;
     total_size += 1 + 4;
 
+    // required bool end = 5;
+    total_size += 1 + 1;
+
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
@@ -733,26 +767,26 @@ size_t TelemetryPoint::ByteSizeLong() const {
   return total_size;
 }
 
-void TelemetryPoint::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:TelemetryPoint)
+void Point::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Point)
   GOOGLE_DCHECK_NE(&from, this);
-  const TelemetryPoint* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const TelemetryPoint>(
+  const Point* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const Point>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:TelemetryPoint)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Point)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:TelemetryPoint)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Point)
     MergeFrom(*source);
   }
 }
 
-void TelemetryPoint::MergeFrom(const TelemetryPoint& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:TelemetryPoint)
+void Point::MergeFrom(const Point& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Point)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from._has_bits_[0 / 32] & 15u) {
+  if (from._has_bits_[0 / 32] & 31u) {
     if (from.has_x()) {
       set_x(from.x());
     }
@@ -765,144 +799,172 @@ void TelemetryPoint::MergeFrom(const TelemetryPoint& from) {
     if (from.has_angle()) {
       set_angle(from.angle());
     }
+    if (from.has_end()) {
+      set_end(from.end());
+    }
   }
 }
 
-void TelemetryPoint::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:TelemetryPoint)
+void Point::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Point)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void TelemetryPoint::CopyFrom(const TelemetryPoint& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:TelemetryPoint)
+void Point::CopyFrom(const Point& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Point)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool TelemetryPoint::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+bool Point::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
   return true;
 }
 
-void TelemetryPoint::Swap(TelemetryPoint* other) {
+void Point::Swap(Point* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void TelemetryPoint::InternalSwap(TelemetryPoint* other) {
+void Point::InternalSwap(Point* other) {
   std::swap(x_, other->x_);
   std::swap(y_, other->y_);
   std::swap(distance_, other->distance_);
   std::swap(angle_, other->angle_);
+  std::swap(end_, other->end_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata TelemetryPoint::GetMetadata() const {
+::google::protobuf::Metadata Point::GetMetadata() const {
   protobuf_lidar_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_lidar_2eproto::file_level_metadata[1];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
-// TelemetryPoint
+// Point
 
 // required int32 x = 1;
-bool TelemetryPoint::has_x() const {
+bool Point::has_x() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-void TelemetryPoint::set_has_x() {
+void Point::set_has_x() {
   _has_bits_[0] |= 0x00000001u;
 }
-void TelemetryPoint::clear_has_x() {
+void Point::clear_has_x() {
   _has_bits_[0] &= ~0x00000001u;
 }
-void TelemetryPoint::clear_x() {
+void Point::clear_x() {
   x_ = 0;
   clear_has_x();
 }
-::google::protobuf::int32 TelemetryPoint::x() const {
-  // @@protoc_insertion_point(field_get:TelemetryPoint.x)
+::google::protobuf::int32 Point::x() const {
+  // @@protoc_insertion_point(field_get:Point.x)
   return x_;
 }
-void TelemetryPoint::set_x(::google::protobuf::int32 value) {
+void Point::set_x(::google::protobuf::int32 value) {
   set_has_x();
   x_ = value;
-  // @@protoc_insertion_point(field_set:TelemetryPoint.x)
+  // @@protoc_insertion_point(field_set:Point.x)
 }
 
 // required int32 y = 2;
-bool TelemetryPoint::has_y() const {
+bool Point::has_y() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-void TelemetryPoint::set_has_y() {
+void Point::set_has_y() {
   _has_bits_[0] |= 0x00000002u;
 }
-void TelemetryPoint::clear_has_y() {
+void Point::clear_has_y() {
   _has_bits_[0] &= ~0x00000002u;
 }
-void TelemetryPoint::clear_y() {
+void Point::clear_y() {
   y_ = 0;
   clear_has_y();
 }
-::google::protobuf::int32 TelemetryPoint::y() const {
-  // @@protoc_insertion_point(field_get:TelemetryPoint.y)
+::google::protobuf::int32 Point::y() const {
+  // @@protoc_insertion_point(field_get:Point.y)
   return y_;
 }
-void TelemetryPoint::set_y(::google::protobuf::int32 value) {
+void Point::set_y(::google::protobuf::int32 value) {
   set_has_y();
   y_ = value;
-  // @@protoc_insertion_point(field_set:TelemetryPoint.y)
+  // @@protoc_insertion_point(field_set:Point.y)
 }
 
 // required float distance = 3;
-bool TelemetryPoint::has_distance() const {
+bool Point::has_distance() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-void TelemetryPoint::set_has_distance() {
+void Point::set_has_distance() {
   _has_bits_[0] |= 0x00000004u;
 }
-void TelemetryPoint::clear_has_distance() {
+void Point::clear_has_distance() {
   _has_bits_[0] &= ~0x00000004u;
 }
-void TelemetryPoint::clear_distance() {
+void Point::clear_distance() {
   distance_ = 0;
   clear_has_distance();
 }
-float TelemetryPoint::distance() const {
-  // @@protoc_insertion_point(field_get:TelemetryPoint.distance)
+float Point::distance() const {
+  // @@protoc_insertion_point(field_get:Point.distance)
   return distance_;
 }
-void TelemetryPoint::set_distance(float value) {
+void Point::set_distance(float value) {
   set_has_distance();
   distance_ = value;
-  // @@protoc_insertion_point(field_set:TelemetryPoint.distance)
+  // @@protoc_insertion_point(field_set:Point.distance)
 }
 
 // required float angle = 4;
-bool TelemetryPoint::has_angle() const {
+bool Point::has_angle() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-void TelemetryPoint::set_has_angle() {
+void Point::set_has_angle() {
   _has_bits_[0] |= 0x00000008u;
 }
-void TelemetryPoint::clear_has_angle() {
+void Point::clear_has_angle() {
   _has_bits_[0] &= ~0x00000008u;
 }
-void TelemetryPoint::clear_angle() {
+void Point::clear_angle() {
   angle_ = 0;
   clear_has_angle();
 }
-float TelemetryPoint::angle() const {
-  // @@protoc_insertion_point(field_get:TelemetryPoint.angle)
+float Point::angle() const {
+  // @@protoc_insertion_point(field_get:Point.angle)
   return angle_;
 }
-void TelemetryPoint::set_angle(float value) {
+void Point::set_angle(float value) {
   set_has_angle();
   angle_ = value;
-  // @@protoc_insertion_point(field_set:TelemetryPoint.angle)
+  // @@protoc_insertion_point(field_set:Point.angle)
+}
+
+// required bool end = 5;
+bool Point::has_end() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+void Point::set_has_end() {
+  _has_bits_[0] |= 0x00000010u;
+}
+void Point::clear_has_end() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+void Point::clear_end() {
+  end_ = false;
+  clear_has_end();
+}
+bool Point::end() const {
+  // @@protoc_insertion_point(field_get:Point.end)
+  return end_;
+}
+void Point::set_end(bool value) {
+  set_has_end();
+  end_ = value;
+  // @@protoc_insertion_point(field_set:Point.end)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
