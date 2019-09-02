@@ -52,11 +52,12 @@ void protobuf_AssignDesc_protobuf_2flidar_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Greeting, _internal_metadata_),
       -1);
   Point_descriptor_ = file->message_type(1);
-  static const int Point_offsets_[4] = {
+  static const int Point_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, x_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, y_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, distance_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, angle_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Point, end_),
   };
   Point_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -106,9 +107,9 @@ void protobuf_AddDesc_protobuf_2flidar_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\024protobuf/lidar.proto\"\034\n\010Greeting\022\020\n\010gr"
-    "eeting\030\001 \002(\t\">\n\005Point\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 "
-    "\002(\005\022\020\n\010distance\030\003 \002(\002\022\r\n\005angle\030\004 \002(\002B\031\n\021"
-    "org.virtuoso.slamB\004Slam", 143);
+    "eeting\030\001 \002(\t\"K\n\005Point\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 "
+    "\002(\005\022\020\n\010distance\030\003 \002(\002\022\r\n\005angle\030\004 \002(\002\022\013\n\003"
+    "end\030\005 \002(\010B\031\n\021org.virtuoso.slamB\004Slam", 156);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "protobuf/lidar.proto", &protobuf_RegisterTypes);
   Greeting::default_instance_ = new Greeting();
@@ -451,6 +452,7 @@ const int Point::kXFieldNumber;
 const int Point::kYFieldNumber;
 const int Point::kDistanceFieldNumber;
 const int Point::kAngleFieldNumber;
+const int Point::kEndFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Point::Point()
@@ -476,6 +478,7 @@ void Point::SharedCtor() {
   y_ = 0;
   distance_ = 0;
   angle_ = 0;
+  end_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -532,7 +535,9 @@ void Point::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  ZR_(x_, angle_);
+  if (_has_bits_[0 / 32] & 31u) {
+    ZR_(x_, end_);
+  }
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -608,6 +613,21 @@ bool Point::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(40)) goto parse_end;
+        break;
+      }
+
+      // required bool end = 5;
+      case 5: {
+        if (tag == 40) {
+         parse_end:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &end_)));
+          set_has_end();
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -657,6 +677,11 @@ void Point::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->angle(), output);
   }
 
+  // required bool end = 5;
+  if (has_end()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->end(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -685,6 +710,11 @@ void Point::SerializeWithCachedSizes(
   // required float angle = 4;
   if (has_angle()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->angle(), target);
+  }
+
+  // required bool end = 5;
+  if (has_end()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->end(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -723,13 +753,18 @@ int Point::RequiredFieldsByteSizeFallback() const {
     total_size += 1 + 4;
   }
 
+  if (has_end()) {
+    // required bool end = 5;
+    total_size += 1 + 1;
+  }
+
   return total_size;
 }
 int Point::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:Point)
   int total_size = 0;
 
-  if (((_has_bits_[0] & 0x0000000f) ^ 0x0000000f) == 0) {  // All required fields are present.
+  if (((_has_bits_[0] & 0x0000001f) ^ 0x0000001f) == 0) {  // All required fields are present.
     // required int32 x = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -745,6 +780,9 @@ int Point::ByteSize() const {
 
     // required float angle = 4;
     total_size += 1 + 4;
+
+    // required bool end = 5;
+    total_size += 1 + 1;
 
   } else {
     total_size += RequiredFieldsByteSizeFallback();
@@ -795,6 +833,9 @@ void Point::MergeFrom(const Point& from) {
     if (from.has_angle()) {
       set_angle(from.angle());
     }
+    if (from.has_end()) {
+      set_end(from.end());
+    }
   }
   if (from._internal_metadata_.have_unknown_fields()) {
     mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -816,7 +857,7 @@ void Point::CopyFrom(const Point& from) {
 }
 
 bool Point::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
 
   return true;
 }
@@ -830,6 +871,7 @@ void Point::InternalSwap(Point* other) {
   std::swap(y_, other->y_);
   std::swap(distance_, other->distance_);
   std::swap(angle_, other->angle_);
+  std::swap(end_, other->end_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -940,6 +982,30 @@ void Point::clear_angle() {
   set_has_angle();
   angle_ = value;
   // @@protoc_insertion_point(field_set:Point.angle)
+}
+
+// required bool end = 5;
+bool Point::has_end() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+void Point::set_has_end() {
+  _has_bits_[0] |= 0x00000010u;
+}
+void Point::clear_has_end() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+void Point::clear_end() {
+  end_ = false;
+  clear_has_end();
+}
+ bool Point::end() const {
+  // @@protoc_insertion_point(field_get:Point.end)
+  return end_;
+}
+ void Point::set_end(bool value) {
+  set_has_end();
+  end_ = value;
+  // @@protoc_insertion_point(field_set:Point.end)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

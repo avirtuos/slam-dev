@@ -80,13 +80,12 @@ int main(int argc, const char *argv[])
     printf("LiDAR BAUD Rate %u \n", com_baudrate);
 
     LaserScan laser(com_path, com_baudrate);
-    laser.start();
 
     signal(SIGINT, ctrlc);
     high_resolution_clock::time_point t1, t2;
 
     //TODO: rplidar examples have this set to ~9000 but I've never seen more than ~2000 samples in a single scan, maybe we can reduce this
-    const int scan_buffer_size = 4000;
+    const int scan_buffer_size = 3000;
     TelemetryPoint *h_scan_p = NULL;
 
     //We used Pinned Host Memory because it tends to be 2x faster than pageable host memory when transfering to/from
@@ -146,15 +145,20 @@ int main(int argc, const char *argv[])
 
     addr_size = sizeof(sockaddr_in);
 
+    //We toggle this so that we can stop a previously started sensor
+    laser.start();
+    laser.stop();
+
     while(true)
     {
         printf("waiting for a connection\n");
         csock = (int *)malloc(sizeof(int));
         if((*csock = accept( hsock, (sockaddr *)&sadr, &addr_size)) != -1)
         {
+            laser.start();
             printf("---------------------\nReceived connection from %s\n", inet_ntoa(sadr.sin_addr));
             int count = 0;
-            while(count++ < 20)
+            while(count++ < 2000)
             {
                 t1 = high_resolution_clock::now();
                 int num_scan_samples = laser.scan(h_scan_p, scan_buffer_size);
@@ -174,6 +178,11 @@ int main(int argc, const char *argv[])
                     point.set_y(t_point.y);
                     point.set_distance(t_point.distance);
                     point.set_angle(t_point.angle);
+                    point.set_end((i + 1 >= num_scan_samples));
+
+                    if(i + 1 >= num_scan_samples){
+                        cout << "SET_END: True" << endl;
+                    }
 
                     int siz = point.ByteSize() + 2;
                     char *pkt = new char [siz];
@@ -186,7 +195,7 @@ int main(int argc, const char *argv[])
                     if( (bytecount = send(*csock, (void *) pkt, siz, 0)) == -1 )
                     {
                         fprintf(stderr, "Error sending data %d\n", errno);
-                        break;
+                        goto NEW_CONN;
                     }
                 }
 
@@ -198,9 +207,11 @@ int main(int argc, const char *argv[])
 
                 if (ctrl_c_pressed)
                 {
-                    break;
+                    goto FINISH;
                 }
             }
+
+NEW_CONN:
 
             close(*csock);
 
@@ -212,6 +223,7 @@ int main(int argc, const char *argv[])
     }
 
 FINISH:
+    close(*csock);
     free(csock);
     laser.stop();
     google::protobuf::ShutdownProtobufLibrary();
