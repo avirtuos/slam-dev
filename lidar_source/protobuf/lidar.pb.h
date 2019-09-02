@@ -233,6 +233,13 @@ class Point : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   float angle() const;
   void set_angle(float value);
 
+  // required bool end = 5;
+  bool has_end() const;
+  void clear_end();
+  static const int kEndFieldNumber = 5;
+  bool end() const;
+  void set_end(bool value);
+
   // @@protoc_insertion_point(class_scope:Point)
  private:
   inline void set_has_x();
@@ -243,6 +250,8 @@ class Point : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   inline void clear_has_distance();
   inline void set_has_angle();
   inline void clear_has_angle();
+  inline void set_has_end();
+  inline void clear_has_end();
 
   // helper for ByteSize()
   int RequiredFieldsByteSizeFallback() const;
@@ -254,6 +263,7 @@ class Point : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::int32 y_;
   float distance_;
   float angle_;
+  bool end_;
   friend void  protobuf_AddDesc_protobuf_2flidar_2eproto();
   friend void protobuf_AssignDesc_protobuf_2flidar_2eproto();
   friend void protobuf_ShutdownFile_protobuf_2flidar_2eproto();
@@ -421,6 +431,30 @@ inline void Point::set_angle(float value) {
   set_has_angle();
   angle_ = value;
   // @@protoc_insertion_point(field_set:Point.angle)
+}
+
+// required bool end = 5;
+inline bool Point::has_end() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Point::set_has_end() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Point::clear_has_end() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Point::clear_end() {
+  end_ = false;
+  clear_has_end();
+}
+inline bool Point::end() const {
+  // @@protoc_insertion_point(field_get:Point.end)
+  return end_;
+}
+inline void Point::set_end(bool value) {
+  set_has_end();
+  end_ = value;
+  // @@protoc_insertion_point(field_set:Point.end)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS

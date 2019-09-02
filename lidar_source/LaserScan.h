@@ -1,6 +1,8 @@
 
 #include "rplidar.h" //RPLIDAR standard sdk, all-in-one header
 #include "TelemetryPoint.h"
+
+#include <stdio.h>
 #include <math.h>
 
 
@@ -11,6 +13,8 @@
 #endif
 
 using namespace rp::standalone::rplidar;
+
+using namespace std;
 
 class LaserScan
 {
@@ -58,7 +62,7 @@ int LaserScan::scan(TelemetryPoint result_buffer[], const int buffer_length)
     int attemps = 0;
     TelemetryPoint *cur = result_buffer;
 
-    while(result_size < buffer_length && attemps < 3){
+    while(result_size < buffer_length && attemps < 2){
         attemps++;
         u_result op_result = drv->grabScanDataHq(nodes, node_count);
         if (IS_OK(op_result))
@@ -78,8 +82,8 @@ int LaserScan::scan(TelemetryPoint result_buffer[], const int buffer_length)
 
                     //dedup points that are essentailly identical after we converted to centimeters, this reduces calculation costs
                     //later and allows fo even naive scoring algos to work well without worrying about deduping.
-                    if(result_size < 1 || result_buffer[result_size-1].x != x || result_buffer[result_size-1].y != y 
-                        || !isDuplicate(result_buffer, result_size, x, y)){
+                    if(result_size < 1 || 
+                        (result_buffer[result_size-1].x != x && result_buffer[result_size-1].y != y && !isDuplicate(result_buffer, result_size, x, y))){
                         cur->x = x;
                         cur->y = y;
                         //cur->quality = quality;
