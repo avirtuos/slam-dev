@@ -32,9 +32,9 @@
 class Greeting;
 class GreetingDefaultTypeInternal;
 extern GreetingDefaultTypeInternal _Greeting_default_instance_;
-class TelemetryPoint;
-class TelemetryPointDefaultTypeInternal;
-extern TelemetryPointDefaultTypeInternal _TelemetryPoint_default_instance_;
+class Point;
+class PointDefaultTypeInternal;
+extern PointDefaultTypeInternal _Point_default_instance_;
 
 namespace protobuf_lidar_2eproto {
 // Internal implementation detail -- do not call these.
@@ -152,14 +152,14 @@ class Greeting : public ::google::protobuf::Message /* @@protoc_insertion_point(
 };
 // -------------------------------------------------------------------
 
-class TelemetryPoint : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:TelemetryPoint) */ {
+class Point : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Point) */ {
  public:
-  TelemetryPoint();
-  virtual ~TelemetryPoint();
+  Point();
+  virtual ~Point();
 
-  TelemetryPoint(const TelemetryPoint& from);
+  Point(const Point& from);
 
-  inline TelemetryPoint& operator=(const TelemetryPoint& from) {
+  inline Point& operator=(const Point& from) {
     CopyFrom(from);
     return *this;
   }
@@ -173,24 +173,24 @@ class TelemetryPoint : public ::google::protobuf::Message /* @@protoc_insertion_
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const TelemetryPoint& default_instance();
+  static const Point& default_instance();
 
-  static inline const TelemetryPoint* internal_default_instance() {
-    return reinterpret_cast<const TelemetryPoint*>(
-               &_TelemetryPoint_default_instance_);
+  static inline const Point* internal_default_instance() {
+    return reinterpret_cast<const Point*>(
+               &_Point_default_instance_);
   }
 
-  void Swap(TelemetryPoint* other);
+  void Swap(Point* other);
 
   // implements Message ----------------------------------------------
 
-  inline TelemetryPoint* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline Point* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  TelemetryPoint* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  Point* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const TelemetryPoint& from);
-  void MergeFrom(const TelemetryPoint& from);
+  void CopyFrom(const Point& from);
+  void MergeFrom(const Point& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -211,7 +211,7 @@ class TelemetryPoint : public ::google::protobuf::Message /* @@protoc_insertion_
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(TelemetryPoint* other);
+  void InternalSwap(Point* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -255,7 +255,14 @@ class TelemetryPoint : public ::google::protobuf::Message /* @@protoc_insertion_
   float angle() const;
   void set_angle(float value);
 
-  // @@protoc_insertion_point(class_scope:TelemetryPoint)
+  // required bool end = 5;
+  bool has_end() const;
+  void clear_end();
+  static const int kEndFieldNumber = 5;
+  bool end() const;
+  void set_end(bool value);
+
+  // @@protoc_insertion_point(class_scope:Point)
  private:
   void set_has_x();
   void clear_has_x();
@@ -265,6 +272,8 @@ class TelemetryPoint : public ::google::protobuf::Message /* @@protoc_insertion_
   void clear_has_distance();
   void set_has_angle();
   void clear_has_angle();
+  void set_has_end();
+  void clear_has_end();
 
   // helper for ByteSizeLong()
   size_t RequiredFieldsByteSizeFallback() const;
@@ -276,6 +285,7 @@ class TelemetryPoint : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 y_;
   float distance_;
   float angle_;
+  bool end_;
   friend struct  protobuf_lidar_2eproto::TableStruct;
 };
 // ===================================================================
@@ -350,102 +360,126 @@ inline void Greeting::set_allocated_greeting(::std::string* greeting) {
 
 // -------------------------------------------------------------------
 
-// TelemetryPoint
+// Point
 
 // required int32 x = 1;
-inline bool TelemetryPoint::has_x() const {
+inline bool Point::has_x() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void TelemetryPoint::set_has_x() {
+inline void Point::set_has_x() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void TelemetryPoint::clear_has_x() {
+inline void Point::clear_has_x() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void TelemetryPoint::clear_x() {
+inline void Point::clear_x() {
   x_ = 0;
   clear_has_x();
 }
-inline ::google::protobuf::int32 TelemetryPoint::x() const {
-  // @@protoc_insertion_point(field_get:TelemetryPoint.x)
+inline ::google::protobuf::int32 Point::x() const {
+  // @@protoc_insertion_point(field_get:Point.x)
   return x_;
 }
-inline void TelemetryPoint::set_x(::google::protobuf::int32 value) {
+inline void Point::set_x(::google::protobuf::int32 value) {
   set_has_x();
   x_ = value;
-  // @@protoc_insertion_point(field_set:TelemetryPoint.x)
+  // @@protoc_insertion_point(field_set:Point.x)
 }
 
 // required int32 y = 2;
-inline bool TelemetryPoint::has_y() const {
+inline bool Point::has_y() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void TelemetryPoint::set_has_y() {
+inline void Point::set_has_y() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void TelemetryPoint::clear_has_y() {
+inline void Point::clear_has_y() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void TelemetryPoint::clear_y() {
+inline void Point::clear_y() {
   y_ = 0;
   clear_has_y();
 }
-inline ::google::protobuf::int32 TelemetryPoint::y() const {
-  // @@protoc_insertion_point(field_get:TelemetryPoint.y)
+inline ::google::protobuf::int32 Point::y() const {
+  // @@protoc_insertion_point(field_get:Point.y)
   return y_;
 }
-inline void TelemetryPoint::set_y(::google::protobuf::int32 value) {
+inline void Point::set_y(::google::protobuf::int32 value) {
   set_has_y();
   y_ = value;
-  // @@protoc_insertion_point(field_set:TelemetryPoint.y)
+  // @@protoc_insertion_point(field_set:Point.y)
 }
 
 // required float distance = 3;
-inline bool TelemetryPoint::has_distance() const {
+inline bool Point::has_distance() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void TelemetryPoint::set_has_distance() {
+inline void Point::set_has_distance() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void TelemetryPoint::clear_has_distance() {
+inline void Point::clear_has_distance() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void TelemetryPoint::clear_distance() {
+inline void Point::clear_distance() {
   distance_ = 0;
   clear_has_distance();
 }
-inline float TelemetryPoint::distance() const {
-  // @@protoc_insertion_point(field_get:TelemetryPoint.distance)
+inline float Point::distance() const {
+  // @@protoc_insertion_point(field_get:Point.distance)
   return distance_;
 }
-inline void TelemetryPoint::set_distance(float value) {
+inline void Point::set_distance(float value) {
   set_has_distance();
   distance_ = value;
-  // @@protoc_insertion_point(field_set:TelemetryPoint.distance)
+  // @@protoc_insertion_point(field_set:Point.distance)
 }
 
 // required float angle = 4;
-inline bool TelemetryPoint::has_angle() const {
+inline bool Point::has_angle() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void TelemetryPoint::set_has_angle() {
+inline void Point::set_has_angle() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void TelemetryPoint::clear_has_angle() {
+inline void Point::clear_has_angle() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void TelemetryPoint::clear_angle() {
+inline void Point::clear_angle() {
   angle_ = 0;
   clear_has_angle();
 }
-inline float TelemetryPoint::angle() const {
-  // @@protoc_insertion_point(field_get:TelemetryPoint.angle)
+inline float Point::angle() const {
+  // @@protoc_insertion_point(field_get:Point.angle)
   return angle_;
 }
-inline void TelemetryPoint::set_angle(float value) {
+inline void Point::set_angle(float value) {
   set_has_angle();
   angle_ = value;
-  // @@protoc_insertion_point(field_set:TelemetryPoint.angle)
+  // @@protoc_insertion_point(field_set:Point.angle)
+}
+
+// required bool end = 5;
+inline bool Point::has_end() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Point::set_has_end() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Point::clear_has_end() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Point::clear_end() {
+  end_ = false;
+  clear_has_end();
+}
+inline bool Point::end() const {
+  // @@protoc_insertion_point(field_get:Point.end)
+  return end_;
+}
+inline void Point::set_end(bool value) {
+  set_has_end();
+  end_ = value;
+  // @@protoc_insertion_point(field_set:Point.end)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
