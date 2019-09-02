@@ -565,8 +565,8 @@ public final class Slam {
 
   }
 
-  public interface TelemetryPointOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:TelemetryPoint)
+  public interface PointOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Point)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -604,23 +604,33 @@ public final class Slam {
      * <code>required float angle = 4;</code>
      */
     float getAngle();
+
+    /**
+     * <code>required bool end = 5;</code>
+     */
+    boolean hasEnd();
+    /**
+     * <code>required bool end = 5;</code>
+     */
+    boolean getEnd();
   }
   /**
-   * Protobuf type {@code TelemetryPoint}
+   * Protobuf type {@code Point}
    */
-  public  static final class TelemetryPoint extends
+  public  static final class Point extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:TelemetryPoint)
-      TelemetryPointOrBuilder {
-    // Use TelemetryPoint.newBuilder() to construct.
-    private TelemetryPoint(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:Point)
+      PointOrBuilder {
+    // Use Point.newBuilder() to construct.
+    private Point(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private TelemetryPoint() {
+    private Point() {
       x_ = 0;
       y_ = 0;
       distance_ = 0F;
       angle_ = 0F;
+      end_ = false;
     }
 
     @java.lang.Override
@@ -628,7 +638,7 @@ public final class Slam {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private TelemetryPoint(
+    private Point(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -671,6 +681,11 @@ public final class Slam {
               angle_ = input.readFloat();
               break;
             }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              end_ = input.readBool();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -685,14 +700,14 @@ public final class Slam {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return org.virtuoso.slam.Slam.internal_static_TelemetryPoint_descriptor;
+      return org.virtuoso.slam.Slam.internal_static_Point_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return org.virtuoso.slam.Slam.internal_static_TelemetryPoint_fieldAccessorTable
+      return org.virtuoso.slam.Slam.internal_static_Point_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              org.virtuoso.slam.Slam.TelemetryPoint.class, org.virtuoso.slam.Slam.TelemetryPoint.Builder.class);
+              org.virtuoso.slam.Slam.Point.class, org.virtuoso.slam.Slam.Point.Builder.class);
     }
 
     private int bitField0_;
@@ -756,6 +771,21 @@ public final class Slam {
       return angle_;
     }
 
+    public static final int END_FIELD_NUMBER = 5;
+    private boolean end_;
+    /**
+     * <code>required bool end = 5;</code>
+     */
+    public boolean hasEnd() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>required bool end = 5;</code>
+     */
+    public boolean getEnd() {
+      return end_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -778,6 +808,10 @@ public final class Slam {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasEnd()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -795,6 +829,9 @@ public final class Slam {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeFloat(4, angle_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBool(5, end_);
       }
       unknownFields.writeTo(output);
     }
@@ -820,6 +857,10 @@ public final class Slam {
         size += com.google.protobuf.CodedOutputStream
           .computeFloatSize(4, angle_);
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, end_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -831,10 +872,10 @@ public final class Slam {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof org.virtuoso.slam.Slam.TelemetryPoint)) {
+      if (!(obj instanceof org.virtuoso.slam.Slam.Point)) {
         return super.equals(obj);
       }
-      org.virtuoso.slam.Slam.TelemetryPoint other = (org.virtuoso.slam.Slam.TelemetryPoint) obj;
+      org.virtuoso.slam.Slam.Point other = (org.virtuoso.slam.Slam.Point) obj;
 
       boolean result = true;
       result = result && (hasX() == other.hasX());
@@ -860,6 +901,11 @@ public final class Slam {
             java.lang.Float.floatToIntBits(getAngle())
             == java.lang.Float.floatToIntBits(
                 other.getAngle()));
+      }
+      result = result && (hasEnd() == other.hasEnd());
+      if (hasEnd()) {
+        result = result && (getEnd()
+            == other.getEnd());
       }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
@@ -890,63 +936,68 @@ public final class Slam {
         hash = (53 * hash) + java.lang.Float.floatToIntBits(
             getAngle());
       }
+      if (hasEnd()) {
+        hash = (37 * hash) + END_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getEnd());
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static org.virtuoso.slam.Slam.TelemetryPoint parseFrom(
+    public static org.virtuoso.slam.Slam.Point parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.virtuoso.slam.Slam.TelemetryPoint parseFrom(
+    public static org.virtuoso.slam.Slam.Point parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.virtuoso.slam.Slam.TelemetryPoint parseFrom(byte[] data)
+    public static org.virtuoso.slam.Slam.Point parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static org.virtuoso.slam.Slam.TelemetryPoint parseFrom(
+    public static org.virtuoso.slam.Slam.Point parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static org.virtuoso.slam.Slam.TelemetryPoint parseFrom(java.io.InputStream input)
+    public static org.virtuoso.slam.Slam.Point parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static org.virtuoso.slam.Slam.TelemetryPoint parseFrom(
+    public static org.virtuoso.slam.Slam.Point parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static org.virtuoso.slam.Slam.TelemetryPoint parseDelimitedFrom(java.io.InputStream input)
+    public static org.virtuoso.slam.Slam.Point parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static org.virtuoso.slam.Slam.TelemetryPoint parseDelimitedFrom(
+    public static org.virtuoso.slam.Slam.Point parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static org.virtuoso.slam.Slam.TelemetryPoint parseFrom(
+    public static org.virtuoso.slam.Slam.Point parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static org.virtuoso.slam.Slam.TelemetryPoint parseFrom(
+    public static org.virtuoso.slam.Slam.Point parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -958,7 +1009,7 @@ public final class Slam {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(org.virtuoso.slam.Slam.TelemetryPoint prototype) {
+    public static Builder newBuilder(org.virtuoso.slam.Slam.Point prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -973,25 +1024,25 @@ public final class Slam {
       return builder;
     }
     /**
-     * Protobuf type {@code TelemetryPoint}
+     * Protobuf type {@code Point}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:TelemetryPoint)
-        org.virtuoso.slam.Slam.TelemetryPointOrBuilder {
+        // @@protoc_insertion_point(builder_implements:Point)
+        org.virtuoso.slam.Slam.PointOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return org.virtuoso.slam.Slam.internal_static_TelemetryPoint_descriptor;
+        return org.virtuoso.slam.Slam.internal_static_Point_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return org.virtuoso.slam.Slam.internal_static_TelemetryPoint_fieldAccessorTable
+        return org.virtuoso.slam.Slam.internal_static_Point_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                org.virtuoso.slam.Slam.TelemetryPoint.class, org.virtuoso.slam.Slam.TelemetryPoint.Builder.class);
+                org.virtuoso.slam.Slam.Point.class, org.virtuoso.slam.Slam.Point.Builder.class);
       }
 
-      // Construct using org.virtuoso.slam.Slam.TelemetryPoint.newBuilder()
+      // Construct using org.virtuoso.slam.Slam.Point.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1016,28 +1067,30 @@ public final class Slam {
         bitField0_ = (bitField0_ & ~0x00000004);
         angle_ = 0F;
         bitField0_ = (bitField0_ & ~0x00000008);
+        end_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return org.virtuoso.slam.Slam.internal_static_TelemetryPoint_descriptor;
+        return org.virtuoso.slam.Slam.internal_static_Point_descriptor;
       }
 
-      public org.virtuoso.slam.Slam.TelemetryPoint getDefaultInstanceForType() {
-        return org.virtuoso.slam.Slam.TelemetryPoint.getDefaultInstance();
+      public org.virtuoso.slam.Slam.Point getDefaultInstanceForType() {
+        return org.virtuoso.slam.Slam.Point.getDefaultInstance();
       }
 
-      public org.virtuoso.slam.Slam.TelemetryPoint build() {
-        org.virtuoso.slam.Slam.TelemetryPoint result = buildPartial();
+      public org.virtuoso.slam.Slam.Point build() {
+        org.virtuoso.slam.Slam.Point result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public org.virtuoso.slam.Slam.TelemetryPoint buildPartial() {
-        org.virtuoso.slam.Slam.TelemetryPoint result = new org.virtuoso.slam.Slam.TelemetryPoint(this);
+      public org.virtuoso.slam.Slam.Point buildPartial() {
+        org.virtuoso.slam.Slam.Point result = new org.virtuoso.slam.Slam.Point(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1056,6 +1109,10 @@ public final class Slam {
           to_bitField0_ |= 0x00000008;
         }
         result.angle_ = angle_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.end_ = end_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1088,16 +1145,16 @@ public final class Slam {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof org.virtuoso.slam.Slam.TelemetryPoint) {
-          return mergeFrom((org.virtuoso.slam.Slam.TelemetryPoint)other);
+        if (other instanceof org.virtuoso.slam.Slam.Point) {
+          return mergeFrom((org.virtuoso.slam.Slam.Point)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(org.virtuoso.slam.Slam.TelemetryPoint other) {
-        if (other == org.virtuoso.slam.Slam.TelemetryPoint.getDefaultInstance()) return this;
+      public Builder mergeFrom(org.virtuoso.slam.Slam.Point other) {
+        if (other == org.virtuoso.slam.Slam.Point.getDefaultInstance()) return this;
         if (other.hasX()) {
           setX(other.getX());
         }
@@ -1109,6 +1166,9 @@ public final class Slam {
         }
         if (other.hasAngle()) {
           setAngle(other.getAngle());
+        }
+        if (other.hasEnd()) {
+          setEnd(other.getEnd());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1128,6 +1188,9 @@ public final class Slam {
         if (!hasAngle()) {
           return false;
         }
+        if (!hasEnd()) {
+          return false;
+        }
         return true;
       }
 
@@ -1135,11 +1198,11 @@ public final class Slam {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        org.virtuoso.slam.Slam.TelemetryPoint parsedMessage = null;
+        org.virtuoso.slam.Slam.Point parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (org.virtuoso.slam.Slam.TelemetryPoint) e.getUnfinishedMessage();
+          parsedMessage = (org.virtuoso.slam.Slam.Point) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -1277,6 +1340,38 @@ public final class Slam {
         onChanged();
         return this;
       }
+
+      private boolean end_ ;
+      /**
+       * <code>required bool end = 5;</code>
+       */
+      public boolean hasEnd() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>required bool end = 5;</code>
+       */
+      public boolean getEnd() {
+        return end_;
+      }
+      /**
+       * <code>required bool end = 5;</code>
+       */
+      public Builder setEnd(boolean value) {
+        bitField0_ |= 0x00000010;
+        end_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool end = 5;</code>
+       */
+      public Builder clearEnd() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        end_ = false;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
@@ -1288,39 +1383,39 @@ public final class Slam {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:TelemetryPoint)
+      // @@protoc_insertion_point(builder_scope:Point)
     }
 
-    // @@protoc_insertion_point(class_scope:TelemetryPoint)
-    private static final org.virtuoso.slam.Slam.TelemetryPoint DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:Point)
+    private static final org.virtuoso.slam.Slam.Point DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.virtuoso.slam.Slam.TelemetryPoint();
+      DEFAULT_INSTANCE = new org.virtuoso.slam.Slam.Point();
     }
 
-    public static org.virtuoso.slam.Slam.TelemetryPoint getDefaultInstance() {
+    public static org.virtuoso.slam.Slam.Point getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<TelemetryPoint>
-        PARSER = new com.google.protobuf.AbstractParser<TelemetryPoint>() {
-      public TelemetryPoint parsePartialFrom(
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Point>
+        PARSER = new com.google.protobuf.AbstractParser<Point>() {
+      public Point parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new TelemetryPoint(input, extensionRegistry);
+          return new Point(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<TelemetryPoint> parser() {
+    public static com.google.protobuf.Parser<Point> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<TelemetryPoint> getParserForType() {
+    public com.google.protobuf.Parser<Point> getParserForType() {
       return PARSER;
     }
 
-    public org.virtuoso.slam.Slam.TelemetryPoint getDefaultInstanceForType() {
+    public org.virtuoso.slam.Slam.Point getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -1332,10 +1427,10 @@ public final class Slam {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Greeting_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_TelemetryPoint_descriptor;
+    internal_static_Point_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_TelemetryPoint_fieldAccessorTable;
+      internal_static_Point_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1346,9 +1441,9 @@ public final class Slam {
   static {
     java.lang.String[] descriptorData = {
       "\n\013lidar.proto\"\034\n\010Greeting\022\020\n\010greeting\030\001 " +
-      "\002(\t\"G\n\016TelemetryPoint\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 " +
-      "\002(\005\022\020\n\010distance\030\003 \002(\002\022\r\n\005angle\030\004 \002(\002B\031\n\021" +
-      "org.virtuoso.slamB\004Slam"
+      "\002(\t\"K\n\005Point\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\020\n\010di" +
+      "stance\030\003 \002(\002\022\r\n\005angle\030\004 \002(\002\022\013\n\003end\030\005 \002(\010" +
+      "B\031\n\021org.virtuoso.slamB\004Slam"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1368,12 +1463,12 @@ public final class Slam {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Greeting_descriptor,
         new java.lang.String[] { "Greeting", });
-    internal_static_TelemetryPoint_descriptor =
+    internal_static_Point_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_TelemetryPoint_fieldAccessorTable = new
+    internal_static_Point_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_TelemetryPoint_descriptor,
-        new java.lang.String[] { "X", "Y", "Distance", "Angle", });
+        internal_static_Point_descriptor,
+        new java.lang.String[] { "X", "Y", "Distance", "Angle", "End", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -4,6 +4,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public class LocationScenario
+        implements Comparable<LocationScenario>
 {
     private final Scan scenario = new Scan();
     private final Slam.Point origin;
@@ -49,5 +50,11 @@ public class LocationScenario
     public void setScore(int score)
     {
         this.score = score;
+    }
+
+    @Override
+    public int compareTo(LocationScenario o)
+    {
+        return Integer.compare(o.getScore(), this.getScore());
     }
 }

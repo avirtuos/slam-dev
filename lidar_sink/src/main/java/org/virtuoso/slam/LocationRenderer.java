@@ -1,6 +1,7 @@
 package org.virtuoso.slam;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -23,14 +24,17 @@ public class LocationRenderer
     private JPanel canvas;
     private final PointMap map;
     private final Localizer localizer;
+    private final PointLocation location;
 
     private final AtomicLong simNum = new AtomicLong(0);
+    private final AtomicLong version = new AtomicLong(0);
     private final AtomicReference<List<LocationScenario>> ref = new AtomicReference<>();
 
-    public LocationRenderer(PointMap map, Localizer localizer)
+    public LocationRenderer(PointMap map, PointLocation location, Localizer localizer)
     {
         this.map = map;
         this.localizer = localizer;
+        this.location = location;
 
         JFrame f = new JFrame();
 
@@ -53,15 +57,17 @@ public class LocationRenderer
                     int newImageWidth = 1000;
                     int newImageHeight = 1000;
 
-                    g.drawString("Num: " + simNum.get() + " Num Points: " + sim.getScenario().getPoints().size() +
+                    g.drawString("Version: " + version.get() +
+                                    " Num: " + simNum.get() +
+                                    " Num Points: " + sim.getScenario().getPoints().size() +
                                     " Matches: " + sim.getScore() +
                                     " x: " + sim.getOrigin().getX() +
                                     " y: " + sim.getOrigin().getY() +
                                     " angle: " + sim.getOrigin().getAngle() +
                                     " size: " + ref.get().size()
-                            , 30, 30);
+                            , 70, 70);
 
-                    g.drawImage(img, 50, 50, newImageWidth, newImageHeight, this);
+                    g.drawImage(img, 100, 100, newImageWidth, newImageHeight, this);
                 }
                 else {
                     g.drawString("No Image Available.", 30, 30);
@@ -73,29 +79,56 @@ public class LocationRenderer
         Border border = BorderFactory.createTitledBorder(title);
         canvas.setBorder(border);
 
+        JButton updateMap = new JButton("Update Map");
+        updateMap.addActionListener((ActionEvent e) -> {
+            LocationScenario sim = null;
+            if (ref.get() != null && simNum.get() < ref.get().size()) {
+                sim = ref.get().get((int) simNum.get());
+            }
+
+            if (sim != null) {
+                map.apply(sim.getScenario());
+                location.update(sim.getOrigin());
+            }
+        });
+
+        JButton enableToggle = new JButton("Toggle Localization");
+        enableToggle.addActionListener((ActionEvent e) -> {
+            if (localizer.isEnabled()) {
+                localizer.setEnabled(false);
+            }
+            else {
+                localizer.setEnabled(true);
+            }
+        });
+
         JButton nextSimButton = new JButton("Next Location Scenario");
         nextSimButton.addActionListener((ActionEvent e) -> {
             List<LocationScenario> sims = ref.get();
+            simNum.incrementAndGet();
             if (sims == null || simNum.get() >= sims.size()) {
                 ref.set(localizer.getPossibleLocations());
+                version.set(localizer.getVersion());
                 simNum.set(0);
             }
-            simNum.incrementAndGet();
             f.repaint();
         });
 
-        JButton prevSimButton = new JButton("PRev Location Scenario");
+        JButton prevSimButton = new JButton("Prev Location Scenario");
         prevSimButton.addActionListener((ActionEvent e) -> {
             List<LocationScenario> sims = ref.get();
-            if (sims == null || simNum.get() >= sims.size()) {
+            simNum.decrementAndGet();
+            if (sims == null || simNum.get() < 0) {
                 ref.set(localizer.getPossibleLocations());
+                version.set(localizer.getVersion());
                 simNum.set(0);
             }
-            simNum.decrementAndGet();
             f.repaint();
         });
 
         canvas.add(nextSimButton);
+        canvas.add(enableToggle);
+        canvas.add(updateMap);
         canvas.add(prevSimButton);
         canvas.setPreferredSize(new Dimension(1000, 1000));
         JScrollPane sp = new JScrollPane(canvas);
@@ -137,9 +170,24 @@ public class LocationRenderer
             }
         });
 
-        for (int x = -2; x < 3; x++) {
-            for (int y = -2; y < 3; y++) {
-                img.setRGB(1000 + sim.getOrigin().getX() + x, 1000 + sim.getOrigin().getY() + y, 65280);
+        List<Slam.Point> history = location.getHistory();
+        int b = 0;
+        int r = 0;
+        for (int i = history.size() - 1; i >= 0; i--) {
+            Slam.Point next = history.get(i);
+            for (int x = -2; x < 3; x++) {
+                for (int y = -2; y < 3; y++) {
+                    img.setRGB(1000 + next.getX() + x,
+                            1000 + next.getY() + y,
+                            new Color(r, 255, b).getRGB());
+                }
+            }
+            b += 20;
+            r += 20;
+
+            if (b > 150) {
+                b = 150;
+                r = 150;
             }
         }
 

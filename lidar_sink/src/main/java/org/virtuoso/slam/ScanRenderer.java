@@ -1,10 +1,12 @@
 package org.virtuoso.slam;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
@@ -17,6 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 public class ScanRenderer
         extends JPanel
         implements ScanAssembler.ScanListener
@@ -26,11 +31,13 @@ public class ScanRenderer
     private final AtomicReference<Scan> lastScan = new AtomicReference(new Scan());
     private final AtomicLong matches = new AtomicLong(0);
     private final PointMap map;
+    private final PointLocation location;
     private final AtomicReference<BufferedImage> bufferedImage = new AtomicReference<>();
 
-    public ScanRenderer(PointMap map)
+    public ScanRenderer(PointMap map, PointLocation location)
     {
         this.map = map;
+        this.location = location;
         this.canvas = new JPanel()
         {
             private static final long serialVersionUID = 1L;
@@ -110,12 +117,27 @@ public class ScanRenderer
 
         scan.getPoints().stream().forEach(point -> {
             try {
+                float effectiveAngle = point.getAngle() + location.get().getAngle();
+                if (effectiveAngle > 359) {
+                    effectiveAngle = effectiveAngle - 359;
+                }
+                int x1 = location.get().getX() + (int) Math.round(sin(effectiveAngle) * point.getDistance());
+                int y1 = location.get().getY() + (int) Math.round(cos(effectiveAngle) * point.getDistance());
+
+                Slam.Point effectivePoint = Slam.Point.newBuilder()
+                        .setAngle(effectiveAngle)
+                        .setDistance(point.getDistance())
+                        .setX(x1)
+                        .setY(y1)
+                        .setEnd(false)
+                        .build();
+
                 int color = 16711680;
-                if (mapPoints.hasPoint(point)) {
+                if (mapPoints.hasPoint(effectivePoint)) {
                     color = 16744448;
                     scanMatches.incrementAndGet();
                 }
-                bufferedImage.get().setRGB(point.getX() + 1000, point.getY() + 1000, color);
+                bufferedImage.get().setRGB(effectivePoint.getX() + 1000, effectivePoint.getY() + 1000, color);
             }
             catch (RuntimeException ex) {
                 System.out.println(point.getX() + " " + point.getY());
@@ -126,9 +148,24 @@ public class ScanRenderer
         matches.set(scanMatches.get());
         lastScan.set(scan);
 
-        for (int x = -2; x < 3; x++) {
-            for (int y = -2; y < 3; y++) {
-                bufferedImage.get().setRGB(1000 + x, 1000 + y, 65280);
+        List<Slam.Point> history = location.getHistory();
+        int b = 0;
+        int r = 0;
+        for (int i = history.size() - 1; i >= 0; i--) {
+            Slam.Point next = history.get(i);
+            for (int x = -2; x < 3; x++) {
+                for (int y = -2; y < 3; y++) {
+                    bufferedImage.get().setRGB(1000 + next.getX() + x,
+                            1000 + next.getY() + y,
+                            new Color(r, 255, b).getRGB());
+                }
+            }
+            b += 20;
+            r += 20;
+
+            if (b > 150) {
+                b = 150;
+                r = 150;
             }
         }
     }

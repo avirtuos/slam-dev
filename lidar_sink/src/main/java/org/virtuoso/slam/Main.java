@@ -6,15 +6,15 @@ public class Main
     public static void main(String[] args)
     {
         PointMap map = new PointMap();
-        Localizer localizer = new Localizer(map);
-        ScanRenderer scanRenderer = new ScanRenderer(map);
+        PointLocation location = new PointLocation();
+        Localizer localizer = new Localizer(map, location);
+        ScanRenderer scanRenderer = new ScanRenderer(map, location);
         ScanAssembler scanAssembler = new ScanAssembler();
         scanAssembler.addListener(scanRenderer);
         scanAssembler.addListener(localizer);
 
-        LocationRenderer locationRenderer = new LocationRenderer(map, localizer);
+        LocationRenderer locationRenderer = new LocationRenderer(map, location, localizer);
         LidarSource lidarSource = new LidarSource();
         lidarSource.attach(scanAssembler);
-
     }
 }

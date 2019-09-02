@@ -10,6 +10,7 @@ public class ScanAssembler
         implements LidarSource.PointListener
 {
     private volatile Scan inProgressScan = new Scan();
+    private final AtomicLong lastStart = new AtomicLong(0);
     private final List<ScanListener> listeners = new ArrayList<>();
     private final AtomicLong numConflations = new AtomicLong(0);
     private final ExecutorService dispatcher = Executors.newFixedThreadPool(5);
@@ -26,6 +27,10 @@ public class ScanAssembler
 
     public void onPoint(Slam.Point point)
     {
+        if (lastStart.get() == 0) {
+            lastStart.set(System.currentTimeMillis());
+        }
+
         if (point.getEnd()) {
             numConflations.incrementAndGet();
         }
@@ -34,9 +39,11 @@ public class ScanAssembler
             inProgressScan.add(point);
         }
         else {
+            System.out.println("Scan produced in: " + (System.currentTimeMillis() - lastStart.get()) / 1000 + " sec.");
             Scan fullScan = inProgressScan;
             inProgressScan = new Scan();
             numConflations.set(0);
+            lastStart.set(0);
             listeners.stream().forEach(next -> dispatcher.submit(() -> next.onScan(fullScan)));
         }
     }
