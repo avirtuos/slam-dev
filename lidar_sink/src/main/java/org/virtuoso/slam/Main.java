@@ -1,5 +1,8 @@
 package org.virtuoso.slam;
 
+import org.virtuoso.slam.localizers.MinDistanceLocalizer;
+import org.virtuoso.slam.localizers.PointMatchingLocalizer;
+
 public class Main
 {
 
@@ -7,13 +10,17 @@ public class Main
     {
         PointMap map = new PointMap();
         PointLocation location = new PointLocation();
-        Localizer localizer = new Localizer(map, location);
+        PointMatchingLocalizer pointMatchingLocalizer = new PointMatchingLocalizer(map, location);
+        MinDistanceLocalizer minDistanceLocalizer = new MinDistanceLocalizer(map, location);
         ScanRenderer scanRenderer = new ScanRenderer(map, location);
         ScanAssembler scanAssembler = new ScanAssembler();
         scanAssembler.addListener(scanRenderer);
-        scanAssembler.addListener(localizer);
+        scanAssembler.addListener(pointMatchingLocalizer);
+        scanAssembler.addListener(minDistanceLocalizer);
 
-        LocationRenderer locationRenderer = new LocationRenderer(map, location, localizer);
+        LocationRenderer pointMatchingLocation = new LocationRenderer(map, location, pointMatchingLocalizer, "PointMatching Location");
+        LocationRenderer minDistanceLocation = new LocationRenderer(map, location, minDistanceLocalizer, "DistanceMinimizing Location");
+
         LidarSource lidarSource = new LidarSource();
         lidarSource.attach(scanAssembler);
     }

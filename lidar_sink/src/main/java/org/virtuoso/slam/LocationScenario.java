@@ -8,22 +8,26 @@ public class LocationScenario
 {
     private final Scan scenario = new Scan();
     private final Slam.Point origin;
-    private volatile int score = 0;
+    private volatile long score = 0;
+    private boolean invert = false;
 
     public LocationScenario(Scan scan, int x, int y, float angle)
     {
         origin = Slam.Point.newBuilder().setAngle(angle).setDistance(0).setX(x).setY(y).setEnd(false).build();
 
         for (Slam.Point next : scan.getPoints()) {
-            float effectiveAngle = next.getAngle() + angle;
-            if (effectiveAngle > 359) {
-                effectiveAngle = effectiveAngle - 359;
+            double effectiveAngle = ((angle * 3.14159265359) / 180) + next.getAngle();
+            if (effectiveAngle > 6.28319) {
+                effectiveAngle = effectiveAngle - 6.28319;
+            }
+            else if (effectiveAngle < 0) {
+                effectiveAngle = effectiveAngle * -1;
             }
             int x1 = x + (int) Math.round(sin(effectiveAngle) * next.getDistance());
             int y1 = y + (int) Math.round(cos(effectiveAngle) * next.getDistance());
 
             scenario.add(Slam.Point.newBuilder()
-                    .setAngle(effectiveAngle)
+                    .setAngle((float) effectiveAngle)
                     .setDistance(next.getDistance())
                     .setX(x1)
                     .setY(y1)
@@ -42,19 +46,29 @@ public class LocationScenario
         return origin;
     }
 
-    public int getScore()
+    public long getScore()
     {
         return score;
     }
 
-    public void setScore(int score)
+    public void setScore(long score)
     {
         this.score = score;
+    }
+
+    public void invert()
+    {
+        this.invert = true;
     }
 
     @Override
     public int compareTo(LocationScenario o)
     {
-        return Integer.compare(o.getScore(), this.getScore());
+        if (invert) {
+            return Long.compare(this.getScore(), o.getScore());
+        }
+        else {
+            return Long.compare(o.getScore(), this.getScore());
+        }
     }
 }

@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 import static java.lang.Math.cos;
@@ -33,6 +34,8 @@ public class ScanRenderer
     private final PointMap map;
     private final PointLocation location;
     private final AtomicReference<BufferedImage> bufferedImage = new AtomicReference<>();
+    private final JTextArea editTextArea = new JTextArea("0,0,0");
+    ;
 
     public ScanRenderer(PointMap map, PointLocation location)
     {
@@ -73,6 +76,7 @@ public class ScanRenderer
             map.apply(lastScan.get());
         });
 
+        canvas.add(editTextArea);
         canvas.add(updateMapButton);
         canvas.setPreferredSize(new Dimension(1000, 1000));
         JScrollPane sp = new JScrollPane(canvas);
@@ -117,15 +121,20 @@ public class ScanRenderer
 
         scan.getPoints().stream().forEach(point -> {
             try {
-                float effectiveAngle = point.getAngle() + location.get().getAngle();
-                if (effectiveAngle > 359) {
-                    effectiveAngle = effectiveAngle - 359;
+                Slam.Point locPoint = location.get();
+
+                double effectiveAngle = ((locPoint.getAngle() * 3.14159265359) / 180) + point.getAngle();
+                if (effectiveAngle > 6.28319) {
+                    effectiveAngle = effectiveAngle - 6.28319;
                 }
-                int x1 = location.get().getX() + (int) Math.round(sin(effectiveAngle) * point.getDistance());
-                int y1 = location.get().getY() + (int) Math.round(cos(effectiveAngle) * point.getDistance());
+                else if (effectiveAngle < 0) {
+                    effectiveAngle = effectiveAngle * -1;
+                }
+                int x1 = locPoint.getX() + (int) Math.round(sin(effectiveAngle) * point.getDistance());
+                int y1 = locPoint.getY() + (int) Math.round(cos(effectiveAngle) * point.getDistance());
 
                 Slam.Point effectivePoint = Slam.Point.newBuilder()
-                        .setAngle(effectiveAngle)
+                        .setAngle((float) effectiveAngle)
                         .setDistance(point.getDistance())
                         .setX(x1)
                         .setY(y1)
@@ -144,6 +153,28 @@ public class ScanRenderer
                 ex.printStackTrace();
             }
         });
+
+        String[] vals = editTextArea.getText().split(",");
+        LocationScenario scenario = new LocationScenario(scan, Integer.valueOf(vals[0]), Integer.valueOf(vals[1]),
+                Float.valueOf(vals[2]));
+        if (scenario.getOrigin().getX() != 0 ||
+                scenario.getOrigin().getY() != 0 ||
+                scenario.getOrigin().getAngle() != 0
+        ) {
+            scenario.getScenario().getPoints().stream().forEach(point -> {
+                try {
+                    int color = 65280;
+                    if (mapPoints.hasPoint(point)) {
+                        color = 16777215;
+                    }
+                    bufferedImage.get().setRGB(point.getX() + 1000, point.getY() + 1000, color);
+                }
+                catch (RuntimeException ex) {
+                    System.out.println(point.getX() + " " + point.getY());
+                    ex.printStackTrace();
+                }
+            });
+        }
 
         matches.set(scanMatches.get());
         lastScan.set(scan);

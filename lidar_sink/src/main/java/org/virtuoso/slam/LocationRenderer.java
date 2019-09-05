@@ -1,5 +1,8 @@
 package org.virtuoso.slam;
 
+import org.virtuoso.slam.localizers.Localizer;
+import org.virtuoso.slam.localizers.PointMatchingLocalizer;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 public class LocationRenderer
@@ -30,7 +34,10 @@ public class LocationRenderer
     private final AtomicLong version = new AtomicLong(0);
     private final AtomicReference<List<LocationScenario>> ref = new AtomicReference<>();
 
-    public LocationRenderer(PointMap map, PointLocation location, Localizer localizer)
+    private final JTextArea editTextArea = new JTextArea("0,0,0");
+    ;
+
+    public LocationRenderer(PointMap map, PointLocation location, Localizer localizer, String name)
     {
         this.map = map;
         this.localizer = localizer;
@@ -75,7 +82,7 @@ public class LocationRenderer
             }
         };
 
-        String title = "Location Status";
+        String title = name;
         Border border = BorderFactory.createTitledBorder(title);
         canvas.setBorder(border);
 
@@ -88,6 +95,17 @@ public class LocationRenderer
 
             if (sim != null) {
                 map.apply(sim.getScenario());
+            }
+        });
+
+        JButton updateLocation = new JButton("Update Location");
+        updateMap.addActionListener((ActionEvent e) -> {
+            LocationScenario sim = null;
+            if (ref.get() != null && simNum.get() < ref.get().size()) {
+                sim = ref.get().get((int) simNum.get());
+            }
+
+            if (sim != null) {
                 location.update(sim.getOrigin());
             }
         });
@@ -126,9 +144,11 @@ public class LocationRenderer
             f.repaint();
         });
 
+        canvas.add(editTextArea);
         canvas.add(nextSimButton);
         canvas.add(enableToggle);
         canvas.add(updateMap);
+        canvas.add(updateLocation);
         canvas.add(prevSimButton);
         canvas.setPreferredSize(new Dimension(1000, 1000));
         JScrollPane sp = new JScrollPane(canvas);
@@ -169,6 +189,30 @@ public class LocationRenderer
                 ex.printStackTrace();
             }
         });
+
+        String[] vals = editTextArea.getText().split(",");
+        LocationScenario scenario = new LocationScenario(sim.getScenario(),
+                sim.getOrigin().getX() + Integer.valueOf(vals[0]),
+                sim.getOrigin().getY() + Integer.valueOf(vals[1]),
+                sim.getOrigin().getAngle() + Float.valueOf(vals[2]));
+        if (Integer.valueOf(vals[0]) != 0 ||
+                Integer.valueOf(vals[1]) != 0 ||
+                Float.valueOf(vals[2]) != 0
+        ) {
+            scenario.getScenario().getPoints().stream().forEach(point -> {
+                try {
+                    int color = 65280;
+                    if (mapPoints.hasPoint(point)) {
+                        color = 16777215;
+                    }
+                    img.setRGB(point.getX() + 1000, point.getY() + 1000, color);
+                }
+                catch (RuntimeException ex) {
+                    System.out.println(point.getX() + " " + point.getY());
+                    ex.printStackTrace();
+                }
+            });
+        }
 
         List<Slam.Point> history = location.getHistory();
         int b = 0;
