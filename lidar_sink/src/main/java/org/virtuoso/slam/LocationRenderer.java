@@ -61,8 +61,8 @@ public class LocationRenderer
 
                 if (sim != null) {
                     BufferedImage img = onScan(sim);
-                    int newImageWidth = 1000;
-                    int newImageHeight = 1000;
+                    int newImageWidth = 800;
+                    int newImageHeight = 800;
 
                     g.drawString("Version: " + version.get() +
                                     " Num: " + simNum.get() +
@@ -168,7 +168,8 @@ public class LocationRenderer
         Scan mapPoints = map.getMap();
         mapPoints.getPoints().stream().forEach(point -> {
             try {
-                img.setRGB(point.getX() + 1000, point.getY() + 1000, 255);
+                img.setRGB(Math.round(point.getX() / 10) + 1000,
+                        Math.round(point.getY() / 10) + 1000, 255);
             }
             catch (RuntimeException ex) {
                 System.out.println(point.getX() + " " + point.getY());
@@ -182,7 +183,8 @@ public class LocationRenderer
                 if (mapPoints.hasPoint(point)) {
                     color = 16744448;
                 }
-                img.setRGB(point.getX() + 1000, point.getY() + 1000, color);
+                img.setRGB(Math.round(point.getX() / 10) + 1000,
+                        Math.round(point.getY() / 10) + 1000, color);
             }
             catch (RuntimeException ex) {
                 System.out.println(point.getX() + " " + point.getY());
@@ -205,7 +207,7 @@ public class LocationRenderer
                     if (mapPoints.hasPoint(point)) {
                         color = 16777215;
                     }
-                    img.setRGB(point.getX() + 1000, point.getY() + 1000, color);
+                    img.setRGB(Math.round(point.getX() / 10) + 1000, Math.round(point.getY() / 10) + 1000, color);
                 }
                 catch (RuntimeException ex) {
                     System.out.println(point.getX() + " " + point.getY());
@@ -221,8 +223,8 @@ public class LocationRenderer
             Slam.Point next = history.get(i);
             for (int x = -2; x < 3; x++) {
                 for (int y = -2; y < 3; y++) {
-                    img.setRGB(1000 + next.getX() + x,
-                            1000 + next.getY() + y,
+                    img.setRGB(1000 + next.getX()/10 + x,
+                            1000 + next.getY()/10 + y,
                             new Color(r, 255, b).getRGB());
                 }
             }

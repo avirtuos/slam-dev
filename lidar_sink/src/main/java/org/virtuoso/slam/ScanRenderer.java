@@ -53,8 +53,8 @@ public class ScanRenderer
                 BufferedImage img = bufferedImage.get();
 
                 if (img != null) {
-                    int newImageWidth = 1000;
-                    int newImageHeight = 1000;
+                    int newImageWidth = 800;
+                    int newImageHeight = 800;
 
                     g.drawString("Num Points: " + lastScan.get().getPoints().size() +
                             " Matches: " + matches.get(), 30, 30);
@@ -111,7 +111,8 @@ public class ScanRenderer
         Scan mapPoints = map.getMap();
         mapPoints.getPoints().stream().forEach(point -> {
             try {
-                bufferedImage.get().setRGB(point.getX() + 1000, point.getY() + 1000, 255);
+                bufferedImage.get().setRGB(Math.round(point.getX() / 10) + 1000,
+                        Math.round(point.getY() / 10) + 1000, 255);
             }
             catch (RuntimeException ex) {
                 System.out.println(point.getX() + " " + point.getY());
@@ -146,7 +147,8 @@ public class ScanRenderer
                     color = 16744448;
                     scanMatches.incrementAndGet();
                 }
-                bufferedImage.get().setRGB(effectivePoint.getX() + 1000, effectivePoint.getY() + 1000, color);
+                bufferedImage.get().setRGB(Math.round(effectivePoint.getX() / 10) + 1000,
+                        Math.round(effectivePoint.getY()/10) + 1000, color);
             }
             catch (RuntimeException ex) {
                 System.out.println(point.getX() + " " + point.getY());
@@ -167,7 +169,7 @@ public class ScanRenderer
                     if (mapPoints.hasPoint(point)) {
                         color = 16777215;
                     }
-                    bufferedImage.get().setRGB(point.getX() + 1000, point.getY() + 1000, color);
+                    bufferedImage.get().setRGB(Math.round(point.getX() / 10) + 1000, Math.round(point.getY() / 10) + 1000, color);
                 }
                 catch (RuntimeException ex) {
                     System.out.println(point.getX() + " " + point.getY());
@@ -186,8 +188,8 @@ public class ScanRenderer
             Slam.Point next = history.get(i);
             for (int x = -2; x < 3; x++) {
                 for (int y = -2; y < 3; y++) {
-                    bufferedImage.get().setRGB(1000 + next.getX() + x,
-                            1000 + next.getY() + y,
+                    bufferedImage.get().setRGB(1000 + next.getX()/10 + x,
+                            1000 + next.getY()/10 + y,
                             new Color(r, 255, b).getRGB());
                 }
             }

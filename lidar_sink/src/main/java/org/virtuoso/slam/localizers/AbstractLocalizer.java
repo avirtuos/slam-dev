@@ -65,7 +65,7 @@ public abstract class AbstractLocalizer
     private void localize(Scan scan)
     {
         if (!enabled) {
-            System.out.println("localize: disabled.");
+            //System.out.println("localize: disabled.");
             return;
         }
         long startTime = System.currentTimeMillis();

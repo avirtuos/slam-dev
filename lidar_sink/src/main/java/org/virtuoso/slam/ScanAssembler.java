@@ -31,15 +31,14 @@ public class ScanAssembler
             lastStart.set(System.currentTimeMillis());
         }
 
-        if (point.getEnd()) {
-            numConflations.incrementAndGet();
-        }
-
-        if (numConflations.get() < 20) {
+        if (numConflations.get() < 1) {
             inProgressScan.add(point);
+            if (point.getEnd()) {
+                numConflations.incrementAndGet();
+            }
         }
         else {
-            System.out.println("Scan produced in: " + (System.currentTimeMillis() - lastStart.get()) / 1000 + " sec.");
+            //System.out.println("Scan produced in: " + (System.currentTimeMillis() - lastStart.get()) / 1000 + " sec.");
             Scan fullScan = inProgressScan;
             inProgressScan = new Scan();
             numConflations.set(0);

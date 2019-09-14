@@ -59,9 +59,9 @@ public class MinDistanceLocalizer
         List<LocationScenario> newSims = new ArrayList<>();
         List<Scenario> scenarios = new ArrayList<>();
         int num = 0;
-        for (int x = -40; x < 40; x += 5) {
-            for (int y = -40; y < 40; y += 5) {
-                for (float angle = -90; angle < 90; angle += 5) {
+        for (int x = -400; x < 400; x += 100) {
+            for (int y = -400; y < 400; y += 100) {
+                for (float angle = -90; angle < 90; angle += 10) {
                     scenarios.add(new Scenario(x, y, angle));
                 }
             }
@@ -87,15 +87,15 @@ public class MinDistanceLocalizer
         //Second Pass
         scenarios.clear();
         Collections.sort(newSims);
-        newSims.stream().forEach(next -> System.out.println("2nd Pass - x: " + next.getOrigin().getX() + " y: " +
+        newSims.stream().forEach(next -> System.out.println("1st Pass - x: " + next.getOrigin().getX() + " y: " +
                 next.getOrigin().getY() + " angle: " + next.getOrigin().getAngle()));
         for (int i = 0; i < 2; i++) {
             Slam.Point bestOrigin = newSims.get(i).getOrigin();
             System.out.println("2nd Pass - x: " + bestOrigin.getX() + " y: " +
                     bestOrigin.getY() + " angle: " + bestOrigin.getAngle());
-            for (int x = bestOrigin.getX() - 5; x < bestOrigin.getX() + 5; x++) {
-                for (int y = bestOrigin.getX() - 5; y < bestOrigin.getX() + 5; y++) {
-                    for (float angle = bestOrigin.getAngle() - 6; angle < bestOrigin.getAngle() + 6; angle += 2) {
+            for (int x = bestOrigin.getX() - 100; x < bestOrigin.getX() + 100; x += 10) {
+                for (int y = bestOrigin.getX() - 100; y < bestOrigin.getX() + 100; y += 10) {
+                    for (float angle = bestOrigin.getAngle() - 10; angle < bestOrigin.getAngle() + 10; angle += 2) {
                         scenarios.add(new Scenario(x, y, angle));
                     }
                 }
@@ -128,8 +128,12 @@ public class MinDistanceLocalizer
             Slam.Point bestOrigin = newSims.get(i).getOrigin();
             System.out.println("3rd Pass - x: " + bestOrigin.getX() + " y: " +
                     bestOrigin.getY() + " angle: " + bestOrigin.getAngle());
-            for (float angle = bestOrigin.getAngle() - 2; angle < bestOrigin.getAngle() + 2; angle += 0.1F) {
-                scenarios.add(new Scenario(bestOrigin.getX(), bestOrigin.getY(), angle));
+            for (int x = bestOrigin.getX() - 10; x < bestOrigin.getX() + 10; x+=2) {
+                for (int y = bestOrigin.getX() - 10; y < bestOrigin.getX() + 10; y+=2) {
+                    for (float angle = bestOrigin.getAngle() - 2; angle < bestOrigin.getAngle() + 2; angle += 1) {
+                        scenarios.add(new Scenario(bestOrigin.getX() + x, bestOrigin.getY() + y, angle));
+                    }
+                }
             }
         }
 
@@ -145,7 +149,43 @@ public class MinDistanceLocalizer
             max = add(newSims, scenario);
 
             if (num % 100 == 0) {
-                System.out.println(" 2rd Pass - Progress: " + num + " max: " + max);
+                System.out.println(" 3rd Pass - Progress: " + num + " max: " + max);
+            }
+        }
+
+
+
+        //Third Pass
+        scenarios.clear();
+        Collections.sort(newSims);
+        newSims.stream().forEach(next -> System.out.println("3rd Pass - x: " + next.getOrigin().getX() + " y: " +
+                next.getOrigin().getY() + " angle: " + next.getOrigin().getAngle()));
+        for (int i = 0; i < 1; i++) {
+            Slam.Point bestOrigin = newSims.get(i).getOrigin();
+            System.out.println("4th Pass - x: " + bestOrigin.getX() + " y: " +
+                    bestOrigin.getY() + " angle: " + bestOrigin.getAngle());
+            for (int x = bestOrigin.getX() - 2; x < bestOrigin.getX() + 2; x++) {
+                for (int y = bestOrigin.getX() - 2; y < bestOrigin.getX() + 2; y++) {
+                    for (float angle = bestOrigin.getAngle() - 1; angle < bestOrigin.getAngle() + 1; angle += 0.05F) {
+                        scenarios.add(new Scenario(bestOrigin.getX() + x, bestOrigin.getY() + y, angle));
+                    }
+                }
+            }
+        }
+
+        Collections.shuffle(scenarios);
+        for (Scenario next : scenarios) {
+            num++;
+            LocationScenario scenario = new LocationScenario(scan,
+                    location.get().getX() + next.getX(),
+                    location.get().getY() + next.getY(),
+                    next.getAngle());
+            scenario.setScore(match(max, scenario));
+            scenario.invert();
+            max = add(newSims, scenario);
+
+            if (num % 100 == 0) {
+                System.out.println(" 4th Pass - Progress: " + num + " max: " + max);
             }
         }
 
@@ -163,7 +203,7 @@ public class MinDistanceLocalizer
             for (Slam.Point nextMap : mapScan.getPoints()) {
                 double x = Math.pow(nextMap.getX() - next.getX(), 2);
                 double y = Math.pow(nextMap.getY() - next.getY(), 2);
-                double distance = Math.sqrt(x + y);
+                double distance = x + y;
                 if (minDistance > distance) {
                     minDistance = distance;
                 }
